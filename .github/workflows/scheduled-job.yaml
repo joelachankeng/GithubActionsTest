@@ -1,8 +1,8 @@
 name: Scheduled Job
-
+# https://crontab.guru/ for syntax
 on:
   schedule:
-    - cron: "*/5 * * * *" # https://crontab.guru/ for syntax
+    - cron: "*/5 * * * *" 
 
 jobs:
   scheduled-job:
