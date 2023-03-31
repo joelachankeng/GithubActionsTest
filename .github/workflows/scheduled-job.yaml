@@ -2,7 +2,7 @@ name: Scheduled Job
 
 on:
   schedule:
-    - cron: "5 0 * * *" # https://crontab.guru/ for syntax
+    - cron: "*/5 * * * *" # https://crontab.guru/ for syntax
 
 jobs:
   scheduled-job:
