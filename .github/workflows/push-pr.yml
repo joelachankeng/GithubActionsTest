@@ -15,4 +15,4 @@ jobs:
       - name: install NPM
         run: npm install
       - name: run script
-        run: node index.js
+        run: node test.js
