@@ -11,7 +11,7 @@ const notify = [
 // const WP_URL = "https://mfi.marriner.com/";
 const WP_URL = "https://michaelfoods.com/";
 
-var allItems = [];
+var allItems = { ids: [] };
 var rejected = [];
 var counter = 0;
 
@@ -32,6 +32,22 @@ runMigration()
   .catch((error) => console.log(error));
 
 async function runMigration() {
+  const getTodayDate =
+    new Date().getMonth() +
+    "/" +
+    new Date().getDate() +
+    "/" +
+    new Date().getFullYear();
+
+  const latestDateUrl =
+    "wp-admin/admin-ajax.php?action=get_fse_migration_lastest_date";
+  const getLatestDate = await axios.get(WP_URL.concat(latestDateUrl));
+
+  if (getLatestDate.data == getTodayDate) {
+    console.log("Already ran migration today! Quitting....");
+    return;
+  }
+
   const getAllItems = await axios.get(
     WP_URL.concat(
       "wp-admin/admin-ajax.php?action=get_fse_migration_request_product_total&postID=5"
@@ -86,14 +102,30 @@ async function runMigration() {
     await timeout(1000);
   }
 
+  // Set Latest Date
+  var dateFormData = new URLSearchParams();
+  dateFormData.append("date", getTodayDate);
+  await axios
+    .post(WP_URL.concat(latestDateUrl), dateFormData)
+    .then(async function (response) {
+      const msg = "Latest Date set successfully!";
+      console.log("Latest Date set successfully!", response.data);
+      collectMessages.push(msg);
+    })
+    .catch(function (error) {
+      const msg = "ERROR: LATEST FAILED TO SET!";
+      console.log("ERROR: LATEST FAILED TO SET!", error.response.data);
+      collectMessages.push(msg);
+    });
+
   // send Email
-  var data = new URLSearchParams();
-  data.append("action", "get_fse_migration_notification_request");
-  data.append("emailArr", notify);
-  data.append("msg", collectMessages);
+  const emailFormData = new URLSearchParams();
+  emailFormData.append("action", "get_fse_migration_notification_request");
+  emailFormData.append("emailArr", notify);
+  emailFormData.append("msg", collectMessages);
 
   await axios
-    .post(WP_URL.concat("wp-admin/admin-ajax.php"), data)
+    .post(WP_URL.concat("wp-admin/admin-ajax.php"), emailFormData)
     .then(async function (response) {
       console.log("Email sent successfully!");
     })
