@@ -1,11 +1,9 @@
-name: Scheduled Job
+name: Push and PR
 
-on:
-  schedule:
-    - cron: "0 * * * *"
+on: [push, pull_request]
 
 jobs:
-  scheduled-job:
+  push-pr:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
