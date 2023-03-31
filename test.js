@@ -8,8 +8,8 @@ const notify = [
   "marshallk@marriner.com",
 ];
 
-// const WP_URL = "https://mfi.marriner.com/";
-const WP_URL = "https://michaelfoods.com/";
+const WP_URL = "https://mfi.marriner.com/";
+// const WP_URL = "https://michaelfoods.com/";
 
 var allItems = [];
 var rejected = [];
