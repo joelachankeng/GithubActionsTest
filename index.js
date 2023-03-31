@@ -87,7 +87,7 @@ async function runMigration() {
   }
 
   // send Email
-  var data = new FormData();
+  var data = new URLSearchParams();
   data.append("action", "get_fse_migration_notification_request");
   data.append("emailArr", notify);
   data.append("msg", collectMessages);
