@@ -17,4 +17,4 @@ jobs:
       - name: install NPM
         run: npm install
       - name: run script
-        run: node test.js
+        run: node migrate.js
